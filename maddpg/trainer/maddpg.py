@@ -7,7 +7,6 @@ from maddpg.common.distributions import make_pdtype
 from maddpg import AgentTrainer
 from maddpg.trainer.replay_buffer import ReplayBuffer
 
-
 def discount_with_dones(rewards, dones, gamma):
     discounted = []
     r = 0
@@ -17,6 +16,7 @@ def discount_with_dones(rewards, dones, gamma):
         discounted.append(r)
     return discounted[::-1]
 
+
 def make_update_exp(vals, target_vals):
     polyak = 1.0 - 1e-2
     expression = []
@@ -25,8 +25,12 @@ def make_update_exp(vals, target_vals):
     expression = tf.group(*expression)
     return U.function([], [], updates=[expression])
 
-def p_train(make_obs_ph_n, act_space_n, p_index, p_func, q_func, optimizer, grad_norm_clipping=None, local_q_func=False, num_units=64, scope="trainer", reuse=None):
+
+def p_train(make_obs_ph_n, act_space_n, p_index, p_func, q_func,
+            optimizer, grad_norm_clipping=None,
+            local_q_func=False, num_units=64, scope="trainer", reuse=None):
     with tf.variable_scope(scope, reuse=reuse):
+
         # create distribtuions
         act_pdtype_n = [make_pdtype(act_space) for act_space in act_space_n]
 
@@ -48,6 +52,7 @@ def p_train(make_obs_ph_n, act_space_n, p_index, p_func, q_func, optimizer, grad
         act_input_n = act_ph_n + []
         act_input_n[p_index] = act_pd.sample()
         q_input = tf.concat(obs_ph_n + act_input_n, 1)
+
         if local_q_func:
             q_input = tf.concat([obs_ph_n[p_index], act_input_n[p_index]], 1)
         q = q_func(q_input, 1, scope="q_func", reuse=True, num_units=num_units)[:,0]
@@ -72,7 +77,11 @@ def p_train(make_obs_ph_n, act_space_n, p_index, p_func, q_func, optimizer, grad
 
         return act, train, update_target_p, {'p_values': p_values, 'target_act': target_act}
 
-def q_train(make_obs_ph_n, act_space_n, q_index, q_func, optimizer, grad_norm_clipping=None, local_q_func=False, scope="trainer", reuse=None, num_units=64):
+
+def q_train(make_obs_ph_n, act_space_n, q_index, q_func, optimizer,
+            grad_norm_clipping=None, local_q_func=False, scope="trainer",
+            reuse=None, num_units=64):
+
     with tf.variable_scope(scope, reuse=reuse):
         # create distribtuions
         act_pdtype_n = [make_pdtype(act_space) for act_space in act_space_n]
@@ -109,7 +118,9 @@ def q_train(make_obs_ph_n, act_space_n, q_index, q_func, optimizer, grad_norm_cl
 
         return train, update_target_q, {'q_values': q_values, 'target_q_values': target_q_values}
 
+
 class MADDPGAgentTrainer(AgentTrainer):
+
     def __init__(self, name, model, obs_shape_n, act_space_n, agent_index, args, local_q_func=False):
         self.name = name
         self.n = len(obs_shape_n)
