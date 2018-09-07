@@ -22,8 +22,8 @@ class MyAgent:
             action_space = env.action_space[0].n
 
 
-        self.actor = ActorNetwork(batch_dim=64, agent_dim=env.n, observation_dim=observation_shape, out_dim=env.n)
-        self.critic = CriticNetwork(action_dim=action_space, agent_dim=env.n, observation_dim=observation_shape)
+        self.actor = ActorNetwork(batch_dim=batch_n, agent_dim=env.n, observation_dim=observation_shape, out_dim=env.n)
+        self.critic = CriticNetwork(batch_dim=batch_n, action_dim=action_space, agent_dim=env.n, observation_dim=observation_shape)
 
         # self.actor = ActorNetwork(batch_n, agent_n, input_dim, action_dim)
         # self.critic = CriticNetwork(batch_n, agent_n, input_dim, action_dim, 1)

@@ -47,24 +47,25 @@ class ActorNetwork(nn.Module):
         self.out_dim = out_dim
 
         self.linear1 = nn.Linear(observation_dim, hidden_dim)
-        self.bilstm = nn.LSTM(32, hidden_dim, num_layers=2,  bidirectional=True)
+        self.bilstm = nn.LSTM(batch_dim, hidden_dim, num_layers=2,  bidirectional=True)
 
-        self.linear2 = nn.Linear(32, out_dim)
+        self.linear2 = nn.Linear(batch_dim, out_dim)
 
-        self.softmax1 = nn.Softmax(out_dim)
+        self.softmax1 = nn.Softmax
 
     def forward(self, o):
         h = TimeDistributed(self.linear1)(o)
         h = TimeDistributed(F.relu)(h)
-        h = self.bilstm(h)
+        h1 = self.bilstm(h)
+        h = h1[0][:, :, 32:64] + h1[0][:, :, 0:32]
         h = TimeDistributed(self.linear2)(h)
-        a = self.softmax1(h)
+        a = TimeDistributed(self.softmax1)(h)
         # a = self.out(h)
 
         return a
 
 class CriticNetwork(nn.Module):
-    def __init__(self, agent_dim, observation_dim, action_dim, out_dim=1, hidden_dim=64, nonlin=F.relu,
+    def __init__(self, batch_dim, agent_dim, observation_dim, action_dim, out_dim=1, hidden_dim=32, nonlin=F.relu,
                  constrain_out=False, norm_in=False):
         """
         Inputs:
@@ -78,6 +79,7 @@ class CriticNetwork(nn.Module):
         super(CriticNetwork, self).__init__()
 
         self.nonlin = nonlin
+        self.batch_n = batch_dim
 
         self.td1 = TimeDistributed(nn.Linear(observation_dim+action_dim, hidden_dim))
         self.relu1 = TimeDistributed(nonlin)

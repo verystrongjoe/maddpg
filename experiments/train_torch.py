@@ -90,7 +90,7 @@ def train(arglist):
         critic = torch.load(arglist.critic_load_dir)
 
     # todo : use agent
-    agent = MyAgent(env, rb, 0.1, 64, env.n, env.observation_space, env.action_space, 10)
+    agent = MyAgent(env, rb, 0.1, 32, env.n, env.observation_space, env.action_space, 10)
 
     episode_rewards = [0.0]  # sum of rewards for all agents
     agent_rewards = [[0.0] for _ in range(env.n)]  # individual agent reward
