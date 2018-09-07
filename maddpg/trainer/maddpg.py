@@ -1,3 +1,20 @@
+"""
+maddpg
+
+discount_with_dones
+make_updaate_exp make function to update actor network
+q_train
+p_train
+MADDPGAgentTrainer
+ - __init__
+ - action
+ - experience
+ - preupdate
+ - update
+ - process_experience
+
+"""
+
 import numpy as np
 import random
 import tensorflow as tf
@@ -6,6 +23,7 @@ import maddpg.common.tf_util as U
 from maddpg.common.distributions import make_pdtype
 from maddpg import AgentTrainer
 from maddpg.trainer.replay_buffer import ReplayBuffer
+
 
 def discount_with_dones(rewards, dones, gamma):
     discounted = []
@@ -18,6 +36,7 @@ def discount_with_dones(rewards, dones, gamma):
 
 
 def make_update_exp(vals, target_vals):
+    # TODO : debug and find out what it is for
     polyak = 1.0 - 1e-2
     expression = []
     for var, var_target in zip(sorted(vals, key=lambda v: v.name), sorted(target_vals, key=lambda v: v.name)):
@@ -70,7 +89,7 @@ def p_train(make_obs_ph_n, act_space_n, p_index, p_func, q_func,
         # target network
         target_p = p_func(p_input, int(act_pdtype_n[p_index].param_shape()[0]), scope="target_p_func", num_units=num_units)
         target_p_func_vars = U.scope_vars(U.absolute_scope_name("target_p_func"))
-        update_target_p = make_update_exp(p_func_vars, target_p_func_vars)
+        update_target_p = make_update_exp(p_func_vars, target_p_func_vars) # TODO: make_update_exp??
 
         target_act_sample = act_pdtype_n[p_index].pdfromflat(target_p).sample()
         target_act = U.function(inputs=[obs_ph_n[p_index]], outputs=target_act_sample)
@@ -81,7 +100,6 @@ def p_train(make_obs_ph_n, act_space_n, p_index, p_func, q_func,
 def q_train(make_obs_ph_n, act_space_n, q_index, q_func, optimizer,
             grad_norm_clipping=None, local_q_func=False, scope="trainer",
             reuse=None, num_units=64):
-
     with tf.variable_scope(scope, reuse=reuse):
         # create distribtuions
         act_pdtype_n = [make_pdtype(act_space) for act_space in act_space_n]
@@ -93,16 +111,17 @@ def q_train(make_obs_ph_n, act_space_n, q_index, q_func, optimizer,
 
         q_input = tf.concat(obs_ph_n + act_ph_n, 1)
         if local_q_func:
-            q_input = tf.concat([obs_ph_n[q_index], act_ph_n[q_index]], 1)
-        q = q_func(q_input, 1, scope="q_func", num_units=num_units)[:,0]
-        q_func_vars = U.scope_vars(U.absolute_scope_name("q_func"))
+            q_input = tf.concat([obs_ph_n[q_index], act_ph_n[q_index]], 1)  # generates (s,a) pair per each agent
+        q = q_func(q_input, 1, scope="q_func", num_units=num_units)[:, 0]  # q_func = call critic network
+        q_func_vars = U.scope_vars(U.absolute_scope_name("q_func"))  # get tf variables out of tf with absolute scope
 
-        q_loss = tf.reduce_mean(tf.square(q - target_ph))
+        q_loss = tf.reduce_mean(tf.square(q - target_ph)) # td error
 
         # viscosity solution to Bellman differential equation in place of an initial condition
         q_reg = tf.reduce_mean(tf.square(q))
-        loss = q_loss #+ 1e-3 * q_reg
+        loss = q_loss #+ 1e-3 * q_reg  # TODO : Q) what is it q_reg and why does it add q_reg+1e-3*q_reg?
 
+        # clipping variables
         optimize_expr = U.minimize_and_clip(optimizer, loss, q_func_vars, grad_norm_clipping)
 
         # Create callable functions
@@ -156,11 +175,11 @@ class MADDPGAgentTrainer(AgentTrainer):
         )
         # Create experience buffer
         self.replay_buffer = ReplayBuffer(1e6)
-        self.max_replay_buffer_len = args.batch_size * args.max_episode_len
+        self.max_replay_buffer_len = args.batch_size * args.max_episode_len # TODO: Q) here replay buffer size is batch size * max episode length?
         self.replay_sample_index = None
 
     def action(self, obs):
-        return self.act(obs[None])[0]
+        return self.act(obs[None])[0]  # get action using actor network
 
     def experience(self, obs, act, rew, new_obs, done, terminal):
         # Store transition in the replay buffer.
@@ -181,14 +200,18 @@ class MADDPGAgentTrainer(AgentTrainer):
         obs_next_n = []
         act_n = []
         index = self.replay_sample_index
+
+        # TODO : why does this code pick out sample from replay buffer two times?
         for i in range(self.n):
             obs, act, rew, obs_next, done = agents[i].replay_buffer.sample_index(index)
             obs_n.append(obs)
             obs_next_n.append(obs_next)
             act_n.append(act)
+
+        # TODO : trainer itself
         obs, act, rew, obs_next, done = self.replay_buffer.sample_index(index)
 
-        # train q network
+        # train critic network
         num_sample = 1
         target_q = 0.0
         for i in range(num_sample):
@@ -198,7 +221,7 @@ class MADDPGAgentTrainer(AgentTrainer):
         target_q /= num_sample
         q_loss = self.q_train(*(obs_n + act_n + [target_q]))
 
-        # train p network
+        # train actor network
         p_loss = self.p_train(*(obs_n + act_n))
 
         self.p_update()

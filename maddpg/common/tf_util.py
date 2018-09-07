@@ -245,9 +245,9 @@ def save_state(fname, saver=None):
 
 
 def function(inputs, outputs, updates=None, givens=None):
-    """Just like Theano function. Take a bunch of tensorflow placeholders and expersions
+    """Just like Theano function. Take a bunch of tensorflow placeholders and expressions
     computed based on those placeholders and produces f(inputs) -> outputs. Function f takes
-    values to be feed to the inputs placeholders and produces the values of the experessions
+    values to be feed to the inputs placeholders and produces the values of the expressions
     in outputs.
 
     Input values can be passed in the same order as inputs or can be provided as kwargs based

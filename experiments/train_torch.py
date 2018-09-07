@@ -1,11 +1,14 @@
+import torch
 import argparse
 import numpy as np
-
+from experiments.memory import SequentialMemory
+from experiments.agent import MyAgent
 import time
 import pickle
 
+
 import maddpg.common.tf_util as U
-from maddpg.trainer.maddpg import MADDPGAgentTrainer
+# from maddpg.trainer.maddpg import MADDPGAgentTrainer
 from experiments.networks import ActorNetwork
 from experiments.networks import CriticNetwork
 
@@ -54,143 +57,115 @@ def make_env(scenario_name, arglist, benchmark=False):
     else:
         env = MultiAgentEnv(world, scenario.reset_world, scenario.reward, scenario.observation)
     return env
-#
-# def get_trainers(env, num_adversaries, obs_shape_n, arglist):
-#     trainers = []
-#     actor = ActorNetwork(agent_dim=env.n, input_dim=(env.n,obs_shape_n), out_dim=(env.n))
-#     critic = CriticNetwork(agent_dim=env.n, input_dim=)
-#
-#     trainer = MADDPGAgentTrainer
-#     # for i in range(num_adversaries):
-#     #     trainers.append(trainer(
-#     #         "agent_%d" % i, actor, obs_shape_n, env.action_space, i, arglist,
-#     #         local_q_func=(arglist.adv_policy=='ddpg')))
-#     for i in range(num_adversaries, env.n):
-#         trainers.append(trainer(
-#             "agent_%d" % i, [actor,critic], obs_shape_n, env.action_space, i, arglist,
-#             local_q_func=(arglist.good_policy=='ddpg')))
-#     return trainers
 
+
+"""
+just replace existing training logic to my model's one with pytorch 
+
+simple snippet 
+
+compile check
+  (action repetition)
+while Episode
+  forward
+  step based on action from above
+  reward += r
+  if max step, done 
+  backward
+"""
 def train(arglist):
-    with U.single_threaded_session():
-        # Create environment
-        env = make_env(arglist.scenario, arglist, arglist.benchmark)
-        # Create agent trainers
-        obs_shape_n = [env.observation_space[i].shape for i in range(env.n)]
-        num_adversaries = min(env.n, arglist.num_adversaries)
 
-        # trainers = get_trainers(env, num_adversaries, obs_shape_n, arglist)
-        # print('Using good policy {} and adv policy {}'.format(arglist.good_policy, arglist.adv_policy))
-        #
-        # # Initialize
-        # U.initialize()
+    # Create environment
+    env = make_env(arglist.scenario, arglist, arglist.benchmark)
+    obs_n = env.reset()
 
-        # Load previous results, if necessary
-        if arglist.load_dir == "":
-            arglist.load_dir = arglist.save_dir
-        if arglist.display or arglist.restore or arglist.benchmark:
-            print('Loading previous state...')
-            U.load_state(arglist.load_dir)
+    rb = SequentialMemory(limit=100000, window_length=1)
 
-        episode_rewards = [0.0]  # sum of rewards for all agents
-        agent_rewards = [[0.0] for _ in range(env.n)]  # individual agent reward
-        final_ep_rewards = []  # sum of rewards for training curve
-        final_ep_ag_rewards = []  # agent rewards for training curve
-        agent_info = [[[]]]  # placeholder for benchmarking info
-        # saver = tf.train.Saver()
-        obs_n = env.reset()
-        episode_step = 0
-        train_step = 0
-        t_start = time.time()
+    # Load previous results, if necessary
+    if arglist.load_dir == "":
+        arglist.load_dir = arglist.save_dir
+    if arglist.display or arglist.restore or arglist.benchmark:
+        print('Loading previous state...')
+        actor = torch.load(arglist.actor_load_dir)
+        critic = torch.load(arglist.critic_load_dir)
 
-        print('Starting iterations...')
-        actor = ActorNetwork(agent_dim=env.n, input_dim=(env.n, obs_shape_n), out_dim=(env.n))
-        critic = CriticNetwork(agent_dim=env.n, input_dim=obs_n)
+    # todo : use agent
+    agent = MyAgent(env, rb, 0.1, 64, env.n, env.observation_space, env.action_space, 10)
 
-        while True:
-            # get action
-            # action_n = [agent.action(obs) for agent, obs in zip(trainers,obs_n)]
+    episode_rewards = [0.0]  # sum of rewards for all agents
+    agent_rewards = [[0.0] for _ in range(env.n)]  # individual agent reward
+    final_ep_rewards = []  # sum of rewards for training curve
+    final_ep_ag_rewards = []  # agent rewards for training curve
+    agent_info = [[[]]]  # placeholder for benchmarking info
+    obs_n = env.reset()
+    episode_step = 0
+    train_step = 0
+    t_start = time.time()
 
-            # environment step
-            action_n = actor.forward(obs_n)
+    print('Starting iterations...')
 
-            new_obs_n, rew_n, done_n, info_n = env.step(action_n)
-            episode_step += 1
-            done = all(done_n)
-            terminal = (episode_step >= arglist.max_episode_len)
+    while True:
+        # get action
+        action_n = agent.forward(obs_n)
 
-            # collect experience
-            for i in range(env.n):
-                agent.experience(obs_n[i], action_n[i], rew_n[i], new_obs_n[i], done_n[i], terminal)
-            obs_n = new_obs_n
+        # environment step
+        new_obs_n, rew_n, done_n, info_n = env.step(action_n)
 
-            for i, rew in enumerate(rew_n):
-                episode_rewards[-1] += rew
-                agent_rewards[i][-1] += rew
+        episode_step += 1
+        done = all(done_n)
+        terminal = (episode_step >= arglist.max_episode_len)
 
-            if done or terminal:
-                obs_n = env.reset()
-                episode_step = 0
-                episode_rewards.append(0)
-                for a in agent_rewards:
-                    a.append(0)
-                agent_info.append([[]])
+        # collect experience
+        rb.append(obs_n, action_n, rew_n, new_obs_n, done_n, terminal)
 
-            # increment global step counter
-            train_step += 1
+        # todo : each agent gets same reward as a one unified reward
+        episode_rewards[-1] += rew_n[0]
 
-            # for benchmarking learned policies
-            if arglist.benchmark:
-                for i, info in enumerate(info_n):
-                    agent_info[-1][i].append(info_n['n'])
-                if train_step > arglist.benchmark_iters and (done or terminal):
-                    file_name = arglist.benchmark_dir + arglist.exp_name + '.pkl'
-                    print('Finished benchmarking, now saving...')
-                    with open(file_name, 'wb') as fp:
-                        pickle.dump(agent_info[:-1], fp)
-                    break
-                continue
+        agent.backward(rew_n[0], terminal=done)
 
-            # for displaying learned policies
-            if arglist.display:
-                time.sleep(0.1)
-                env.render()
-                continue
+        if done or terminal:
+            obs_n = env.reset()
+            episode_step = 0
+            episode_rewards.append(0)
+            # for a in agent_rewards:
+            #     a.append(0)
+            # agent_info.append([[]])
 
-            # update all trainers, if not in display or benchmark mode
-            loss = None
-            for agent in trainers:
-                agent.preupdate()
-            for agent in trainers:
-                loss = agent.update(trainers, train_step)
 
-            # save model, display training output
-            if terminal and (len(episode_rewards) % arglist.save_rate == 0):
-                U.save_state(arglist.save_dir, saver=saver)
-                # print statement depends on whether or not there are adversaries
-                if num_adversaries == 0:
-                    print("steps: {}, episodes: {}, mean episode reward: {}, time: {}".format(
-                        train_step, len(episode_rewards), np.mean(episode_rewards[-arglist.save_rate:]), round(time.time()-t_start, 3)))
-                else:
-                    print("steps: {}, episodes: {}, mean episode reward: {}, agent episode reward: {}, time: {}".format(
-                        train_step, len(episode_rewards), np.mean(episode_rewards[-arglist.save_rate:]),
-                        [np.mean(rew[-arglist.save_rate:]) for rew in agent_rewards], round(time.time()-t_start, 3)))
-                t_start = time.time()
-                # Keep track of final episode reward
-                final_ep_rewards.append(np.mean(episode_rewards[-arglist.save_rate:]))
-                for rew in agent_rewards:
-                    final_ep_ag_rewards.append(np.mean(rew[-arglist.save_rate:]))
+        # increment global step counter
+        train_step += 1
 
-            # saves final episode reward for plotting training curve later
-            if len(episode_rewards) > arglist.num_episodes:
-                rew_file_name = arglist.plots_dir + arglist.exp_name + '_rewards.pkl'
-                with open(rew_file_name, 'wb') as fp:
-                    pickle.dump(final_ep_rewards, fp)
-                agrew_file_name = arglist.plots_dir + arglist.exp_name + '_agrewards.pkl'
-                with open(agrew_file_name, 'wb') as fp:
-                    pickle.dump(final_ep_ag_rewards, fp)
-                print('...Finished total of {} episodes.'.format(len(episode_rewards)))
-                break
+        # for displaying learned policies
+        if arglist.display:
+            time.sleep(0.1)
+            env.render()
+            continue
+
+        # save model, display training output
+        if terminal and (len(episode_rewards) % arglist.save_rate == 0):
+            # todo : pytorch save
+            torch.save(critic, arglist.critic_load_dir)
+            torch.save(actor, arglist.actor_load_dir)
+
+            print("steps: {}, episodes: {}, mean episode reward: {}, time: {}".
+                format(train_step, len(episode_rewards),
+                       np.mean(episode_rewards[-arglist.save_rate:]),
+                       round(time.time()-t_start, 3)))
+
+            t_start = time.time()
+            # Keep track of final episode reward
+            final_ep_rewards.append(np.mean(episode_rewards[-arglist.save_rate:]))
+
+        # saves final episode reward for plotting training curve later
+        if len(episode_rewards) > arglist.num_episodes:
+            rew_file_name = arglist.plots_dir + arglist.exp_name + '_rewards.pkl'
+            with open(rew_file_name, 'wb') as fp:
+                pickle.dump(final_ep_rewards, fp)
+            agrew_file_name = arglist.plots_dir + arglist.exp_name + '_agrewards.pkl'
+            with open(agrew_file_name, 'wb') as fp:
+                pickle.dump(final_ep_ag_rewards, fp)
+            print('...Finished total of {} episodes.'.format(len(episode_rewards)))
+            break
 
 if __name__ == '__main__':
     arglist = parse_args()

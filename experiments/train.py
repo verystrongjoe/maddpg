@@ -14,12 +14,13 @@ def parse_args():
     # Environment
     parser.add_argument("--scenario", type=str, default="simple", help="name of the scenario script")
     parser.add_argument("--max-episode-len", type=int, default=25, help="maximum episode length")
-    parser.add_argument("--num-episodes", type=int, default=60000, help="number of episodes")
+    parser.add_argument("--num-episodes", type=int, default=10000, help="number of episodes")
     parser.add_argument("--num-adversaries", type=int, default=0, help="number of adversaries")
     parser.add_argument("--good-policy", type=str, default="maddpg", help="policy for good agents")
     parser.add_argument("--adv-policy", type=str, default="maddpg", help="policy of adversaries")
 
     # Core training parameters
+    # TODO : adapt skopt to find best hyperparams
     parser.add_argument("--lr", type=float, default=1e-2, help="learning rate for Adam optimizer")
     parser.add_argument("--gamma", type=float, default=0.95, help="discount factor")
     parser.add_argument("--batch-size", type=int, default=1024, help="number of episodes to optimize at the same time")
@@ -27,17 +28,19 @@ def parse_args():
 
     # Checkpointing
     parser.add_argument("--exp-name", type=str, default="default", help="name of the experiment")
-    parser.add_argument("--save-dir", type=str, default="/tmp/policy/", help="directory in which training state and model should be saved")
-    parser.add_argument("--save-rate", type=int, default=1000, help="save model once every time this many episodes are completed")
-    parser.add_argument("--load-dir", type=str, default="/tmp/policy/", help="directory in which training state and model are loaded")
+    parser.add_argument("--save-dir", type=str, default="tmp/policy/", help="directory in which training state and model should be saved")
+    parser.add_argument("--save-rate", type=int, default=100, help="save model once every time this many episodes are completed")
+    parser.add_argument("--load-dir", type=str, default="", help="directory in which training state and model are loaded")
 
     # Evaluation
-    parser.add_argument("--restore", action="store_true", default=False)
-    parser.add_argument("--display", action="store_true", default=False)
+    parser.add_argument("--restore", action="store_true", default=False) # TODO : turn it on to evaluates model
+    parser.add_argument("--display", action="store_true", default=False) # TODO : render
+
+    ##
     parser.add_argument("--benchmark", action="store_true", default=False)
     parser.add_argument("--benchmark-iters", type=int, default=100000, help="number of iterations run for benchmarking")
-    parser.add_argument("--benchmark-dir", type=str, default="./benchmark_files/", help="directory where benchmark data is saved")
-    parser.add_argument("--plots-dir", type=str, default="./learning_curves/", help="directory where plot data is saved")
+    parser.add_argument("--benchmark-dir", type=str, default="benchmark_files/", help="directory where benchmark data is saved")
+    parser.add_argument("--plots-dir", type=str, default="learning_curves/", help="directory where plot data is saved")
     return parser.parse_args()
 
 def mlp_model(input, num_outputs, scope, reuse=False, num_units=64, rnn_cell=None):
@@ -64,6 +67,8 @@ def make_env(scenario_name, arglist, benchmark=False):
         env = MultiAgentEnv(world, scenario.reset_world, scenario.reward, scenario.observation)
     return env
 
+
+
 def get_trainers(env, num_adversaries, obs_shape_n, arglist):
     trainers = []
     model = mlp_model
@@ -81,8 +86,10 @@ def get_trainers(env, num_adversaries, obs_shape_n, arglist):
 
 def train(arglist):
     with U.single_threaded_session():
+
         # Create environment
         env = make_env(arglist.scenario, arglist, arglist.benchmark)
+
         # Create agent trainers
         obs_shape_n = [env.observation_space[i].shape for i in range(env.n)]
         num_adversaries = min(env.n, arglist.num_adversaries)
@@ -113,7 +120,9 @@ def train(arglist):
         print('Starting iterations...')
         while True:
             # get action
+            # TODO : fix
             action_n = [agent.action(obs) for agent, obs in zip(trainers,obs_n)]
+
             # environment step
             new_obs_n, rew_n, done_n, info_n = env.step(action_n)
             episode_step += 1
@@ -121,7 +130,8 @@ def train(arglist):
             terminal = (episode_step >= arglist.max_episode_len)
 
             # collect experience
-            for i in range(env.n):
+            # TODO : fix
+            for i, agent in enumerate(trainers):
                 agent.experience(obs_n[i], action_n[i], rew_n[i], new_obs_n[i], done_n[i], terminal)
             obs_n = new_obs_n
 
@@ -161,8 +171,9 @@ def train(arglist):
             # update all trainers, if not in display or benchmark mode
             loss = None
             for agent in trainers:
-                agent.preupdate()
+                agent.preupdate() # replay_sample_index set as None?
             for agent in trainers:
+                # TODO : fix!!
                 loss = agent.update(trainers, train_step)
 
             # save model, display training output
@@ -182,6 +193,10 @@ def train(arglist):
                 for rew in agent_rewards:
                     final_ep_ag_rewards.append(np.mean(rew[-arglist.save_rate:]))
 
+            import os
+
+            if not os.path.exists(arglist.plots_dir):
+                os.makedirs(arglist.plots_dir)
             # saves final episode reward for plotting training curve later
             if len(episode_rewards) > arglist.num_episodes:
                 rew_file_name = arglist.plots_dir + arglist.exp_name + '_rewards.pkl'
