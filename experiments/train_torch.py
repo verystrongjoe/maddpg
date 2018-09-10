@@ -5,7 +5,7 @@ from experiments.memory import SequentialMemory
 from experiments.agent import MyAgent
 import time
 import pickle
-
+import keras
 
 import maddpg.common.tf_util as U
 # from maddpg.trainer.maddpg import MADDPGAgentTrainer
@@ -30,9 +30,16 @@ def parse_args():
     parser.add_argument("--num-units", type=int, default=64, help="number of units in the mlp")
     # Checkpointing
     parser.add_argument("--exp-name", type=str, default="default", help="name of the experiment")
-    parser.add_argument("--save-dir", type=str, default="/tmp/policy/", help="directory in which training state and model should be saved")
     parser.add_argument("--save-rate", type=int, default=1000, help="save model once every time this many episodes are completed")
-    parser.add_argument("--load-dir", type=str, default="", help="directory in which training state and model are loaded")
+
+    parser.add_argument("--save-dir", type=str, default="/", help="directory in which training state and model should be saved")
+    parser.add_argument("--save-critic-dir", type=str, default="tmp/policy", help="directory in which training state and model are saved")
+    parser.add_argument("--save-actor-dir", type=str, default="tmp/policy", help="directory in which training state and model are saved")
+
+    parser.add_argument("--load-dir", type=str, default="",
+                        help="directory in which training state and model are loaded")
+    parser.add_argument("--load-critic-dir", type=str, default="tmp/policy", help="directory in which training state and model are loaded")
+    parser.add_argument("--load-actor-dir", type=str, default="tmp/policy", help="directory in which training state and model are loaded")
 
     # Evaluation
     parser.add_argument("--restore", action="store_true", default=False)
@@ -56,6 +63,10 @@ def make_env(scenario_name, arglist, benchmark=False):
         env = MultiAgentEnv(world, scenario.reset_world, scenario.reward, scenario.observation, scenario.benchmark_data)
     else:
         env = MultiAgentEnv(world, scenario.reset_world, scenario.reward, scenario.observation)
+
+    # additional setting
+    # env.discrete_action_input = True
+
     return env
 
 
@@ -81,16 +92,23 @@ def train(arglist):
 
     rb = SequentialMemory(limit=100000, window_length=1)
 
+    actor = ActorNetwork(32, env.n, env.observation_space[0].shape[0],
+                         env.action_space[0].n, 32)
+    critic = CriticNetwork(32, env.n,
+                           env.observation_space[0].shape[0],
+                           env.action_space[0].n, 1)
+
     # Load previous results, if necessary
     if arglist.load_dir == "":
         arglist.load_dir = arglist.save_dir
     if arglist.display or arglist.restore or arglist.benchmark:
         print('Loading previous state...')
-        actor = torch.load(arglist.actor_load_dir)
-        critic = torch.load(arglist.critic_load_dir)
+        # actor = torch.load(arglist.load_actor_dir)
+        # critic = torch.load(arglist.load_critic_dir)
 
     # todo : use agent
-    agent = MyAgent(env, rb, 0.1, 32, env.n, env.observation_space, env.action_space, 10)
+    agent = MyAgent(env, actor, critic, rb, 0.1, 32, env.n, env.observation_space, env.action_space, 10)
+
 
     episode_rewards = [0.0]  # sum of rewards for all agents
     agent_rewards = [[0.0] for _ in range(env.n)]  # individual agent reward
@@ -108,6 +126,10 @@ def train(arglist):
         # get action
         action_n = agent.forward(obs_n)
 
+        # sample action from probabilities
+        # action_n = [keras.utils.to_categorical(a.detach(), 5) for a in action_n[0]]
+        action_n = [a.detach() for a in action_n[0]]
+
         # environment step
         new_obs_n, rew_n, done_n, info_n = env.step(action_n)
 
@@ -116,12 +138,12 @@ def train(arglist):
         terminal = (episode_step >= arglist.max_episode_len)
 
         # collect experience
-        rb.append(obs_n, action_n, rew_n, new_obs_n, done_n, terminal)
+        rb.append(obs_n, action_n, rew_n, terminal, True)
 
         # todo : each agent gets same reward as a one unified reward
         episode_rewards[-1] += rew_n[0]
 
-        agent.backward(rew_n[0], terminal=done)
+        agent.backward(rew_n[0], t=done)
 
         if done or terminal:
             obs_n = env.reset()
@@ -130,7 +152,6 @@ def train(arglist):
             # for a in agent_rewards:
             #     a.append(0)
             # agent_info.append([[]])
-
 
         # increment global step counter
         train_step += 1
@@ -144,8 +165,8 @@ def train(arglist):
         # save model, display training output
         if terminal and (len(episode_rewards) % arglist.save_rate == 0):
             # todo : pytorch save
-            torch.save(critic, arglist.critic_load_dir)
-            torch.save(actor, arglist.actor_load_dir)
+            # torch.save(critic, arglist.save_critic_dir)
+            # torch.save(actor, arglist.save_actor_dir)
 
             print("steps: {}, episodes: {}, mean episode reward: {}, time: {}".
                 format(train_step, len(episode_rewards),

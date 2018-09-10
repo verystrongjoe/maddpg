@@ -59,6 +59,7 @@ def p_train(make_obs_ph_n, act_space_n, p_index, p_func, q_func,
 
         p_input = obs_ph_n[p_index]
 
+        # mlp_model(input, num_outputs, scope, reuse=False, num_units=64, rnn_cell=None):
         p = p_func(p_input, int(act_pdtype_n[p_index].param_shape()[0]), scope="p_func", num_units=num_units)
         p_func_vars = U.scope_vars(U.absolute_scope_name("p_func"))
 

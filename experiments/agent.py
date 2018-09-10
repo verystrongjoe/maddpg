@@ -13,7 +13,7 @@ Experience = namedtuple('Experience',
 
 class MyAgent:
 
-    def __init__(self, env, memory, reward_factor, batch_n, agent_n, input_dim, action_dim, warm_up_episode_n=10):
+    def __init__(self, env, actor, critic, memory, reward_factor, batch_n, agent_n, input_dim, action_dim, warm_up_episode_n=10):
 
         self.env = env
         # suppose that agent type is homogeneous which means those agents have same observation and action space itself
@@ -21,12 +21,10 @@ class MyAgent:
             observation_shape = env.observation_space[0].shape[0]
             action_space = env.action_space[0].n
 
-
-        self.actor = ActorNetwork(batch_dim=batch_n, agent_dim=env.n, observation_dim=observation_shape, out_dim=env.n)
-        self.critic = CriticNetwork(batch_dim=batch_n, action_dim=action_space, agent_dim=env.n, observation_dim=observation_shape)
-
         # self.actor = ActorNetwork(batch_n, agent_n, input_dim, action_dim)
         # self.critic = CriticNetwork(batch_n, agent_n, input_dim, action_dim, 1)
+        self.actor = actor
+        self.critic = critic
 
         self.target_actor = deepcopy(self.actor)
         self.target_critic = deepcopy(self.critic)
@@ -55,7 +53,7 @@ class MyAgent:
         #         self.target_critic.cuda()
 
     def backward(self, r, t=False):
-        FloatTensor = th.cuda.FloatTensor if self.use_cuda else th.FloatTensor
+        # FloatTensor = th.cuda.FloatTensor if self.use_cuda else th.FloatTensor
 
         # todo : consider memory interval?
         self.memory.append(self.recent_observation,
