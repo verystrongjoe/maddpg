@@ -18,7 +18,7 @@ def parse_args():
     # Environment
     parser.add_argument("--scenario", type=str, default="simple", help="name of the scenario script")
     parser.add_argument("--max-episode-len", type=int, default=25, help="maximum episode length")
-    parser.add_argument("--num-episodes", type=int, default=60000, help="number of episodes")
+    parser.add_argument("--num-episodes", type=int, default=80000, help="number of episodes")
     parser.add_argument("--num-adversaries", type=int, default=0, help="number of adversaries")
     parser.add_argument("--good-policy", type=str, default="maddpg", help="policy for good agents")
     parser.add_argument("--adv-policy", type=str, default="maddpg", help="policy of adversaries")
@@ -26,9 +26,12 @@ def parse_args():
     # Core training parameters
     parser.add_argument("--lr", type=float, default=1e-2, help="learning rate for Adam optimizer")
     parser.add_argument("--gamma", type=float, default=0.95, help="discount factor")
-    parser.add_argument("--batch-size", type=int, default=1024, help="number of episodes to optimize at the same time")
+    parser.add_argument("--batch-size", type=int, default=64, help="number of episodes to optimize at the same time")
     parser.add_argument("--num-units", type=int, default=64, help="number of units in the mlp")
-    # Checkpointing
+
+    # Checkpoint
+    parser.add_argument("--warm-up-episodes", type=int, default=2000, help="warm up episodes")
+
     parser.add_argument("--exp-name", type=str, default="default", help="name of the experiment")
     parser.add_argument("--save-rate", type=int, default=1000, help="save model once every time this many episodes are completed")
 
@@ -60,9 +63,9 @@ def make_env(scenario_name, arglist, benchmark=False):
     world = scenario.make_world()
     # create multiagent environment
     if benchmark:
-        env = MultiAgentEnv(world, scenario.reset_world, scenario.reward, scenario.observation, scenario.benchmark_data)
+        env = MultiAgentEnv(scenario_name, world, scenario.reset_world, scenario.reward, scenario.observation, scenario.benchmark_data)
     else:
-        env = MultiAgentEnv(world, scenario.reset_world, scenario.reward, scenario.observation)
+        env = MultiAgentEnv(scenario_name, world, scenario.reset_world, scenario.reward, scenario.observation)
 
     # additional setting
     # env.discrete_action_input = True
@@ -107,8 +110,7 @@ def train(arglist):
         # critic = torch.load(arglist.load_critic_dir)
 
     # todo : use agent
-    agent = MyAgent(env, actor, critic, rb, 0.1, 32, env.n, env.observation_space, env.action_space, 10)
-
+    agent = MyAgent(env, actor, critic, rb, 0.1, 32, env.n, env.observation_space, env.action_space, arglist.warm_up_episodes)
 
     episode_rewards = [0.0]  # sum of rewards for all agents
     agent_rewards = [[0.0] for _ in range(env.n)]  # individual agent reward
@@ -138,14 +140,20 @@ def train(arglist):
         terminal = (episode_step >= arglist.max_episode_len)
 
         # collect experience
-        rb.append(obs_n, action_n, rew_n, terminal, True)
+        # agent.memory.append(obs_n, action_n, rew_n, done or terminal, True)
+        # print(rew_n)
 
         # todo : each agent gets same reward as a one unified reward
         episode_rewards[-1] += rew_n[0]
 
-        agent.backward(rew_n[0], t=done)
+        # todo : warm up
+        agent.backward(rew_n[0], t=done or terminal)
 
         if done or terminal:
+
+            agent.forward(obs_n)
+            agent.backward(0., t=False)
+
             obs_n = env.reset()
             episode_step = 0
             episode_rewards.append(0)

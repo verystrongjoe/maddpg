@@ -4,9 +4,9 @@
     <list default="true" id="7e4ce5db-7215-44e9-b871-9453c833badf" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/experiments/agent.py" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/agent.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiments/networks.py" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/networks.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/network_test.py" beforeDir="false" afterPath="$PROJECT_DIR$/network_test.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiments/train.py" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/train.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/experiments/train_torch.py" beforeDir="false" afterPath="$PROJECT_DIR$/experiments/train_torch.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/maddpg/trainer/maddpg.py" beforeDir="false" afterPath="$PROJECT_DIR$/maddpg/trainer/maddpg.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -16,102 +16,14 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="FileEditorManager">
-    <splitter split-orientation="horizontal" split-proportion="0.6918429">
+    <splitter split-orientation="horizontal" split-proportion="0.36195996">
       <split-first>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-          <file leaf-file-name="maddpg.py" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/maddpg/trainer/maddpg.py">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="235">
-                  <caret line="174" column="31" lean-forward="true" selection-start-line="174" selection-start-column="31" selection-end-line="174" selection-end-column="31" />
-                  <folding>
-                    <element signature="e#209#227#0" expanded="true" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="distributions.py" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/maddpg/common/distributions.py">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="4896">
-                  <caret line="311" selection-start-line="311" selection-end-line="311" />
-                  <folding>
-                    <element signature="e#0#23#0" expanded="true" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="train_torch.py" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/experiments/train_torch.py">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="216">
-                  <caret line="18" column="59" lean-forward="true" selection-start-line="18" selection-start-column="59" selection-end-line="18" selection-end-column="59" />
-                  <folding>
-                    <element signature="e#0#12#0" expanded="true" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="serialization.py" pinned="false" current-in-tab="false">
-            <entry file="file://D:/temp/Python35/Lib/site-packages/torch/serialization.py">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="196">
-                  <caret line="208" selection-start-line="208" selection-end-line="208" />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="linear.py" pinned="false" current-in-tab="false">
-            <entry file="file://D:/temp/Python35/Lib/site-packages/torch/nn/modules/linear.py">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="560">
-                  <caret line="40" selection-start-line="40" selection-end-line="40" />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="simple_spread.py" pinned="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/../multiagent-particle-envs/multiagent/scenarios/simple_spread.py">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="191">
-                  <caret line="95" column="14" selection-start-line="95" selection-start-column="14" selection-end-line="95" selection-end-column="14" />
-                </state>
-              </provider>
-            </entry>
-          </file>
-        </leaf>
-      </split-first>
-      <split-second>
-        <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-          <file leaf-file-name="agent.py" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/experiments/agent.py">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="1066">
-                  <caret line="103" column="23" lean-forward="true" selection-start-line="103" selection-start-column="23" selection-end-line="103" selection-end-column="23" />
-                  <folding>
-                    <element signature="e#0#60#0" expanded="true" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="codecs.py" pinned="false" current-in-tab="false">
-            <entry file="file://D:/temp/Python35/Lib/codecs.py">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="4928">
-                  <caret line="308" selection-start-line="308" selection-end-line="308" />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="networks.py" pinned="false" current-in-tab="false">
+          <file leaf-file-name="networks.py" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/experiments/networks.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="224">
-                  <caret line="35" column="32" lean-forward="true" selection-start-line="35" selection-start-column="32" selection-end-line="35" selection-end-column="32" />
+                <state relative-caret-position="416">
+                  <caret line="32" column="53" lean-forward="true" selection-start-line="32" selection-start-column="53" selection-end-line="32" selection-end-column="53" />
                   <folding>
                     <element signature="e#0#18#0" expanded="true" />
                   </folding>
@@ -119,25 +31,13 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="environment.py" pinned="false" current-in-tab="true">
+          <file leaf-file-name="environment.py" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/../multiagent-particle-envs/multiagent/environment.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="192">
-                  <caret line="105" column="31" lean-forward="true" selection-start-line="105" selection-start-column="31" selection-end-line="105" selection-end-column="31" />
+                <state relative-caret-position="203">
+                  <caret line="88" column="35" lean-forward="true" selection-start-line="88" selection-start-column="35" selection-end-line="88" selection-end-column="35" />
                   <folding>
                     <element signature="e#0#10#0" expanded="true" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="memory.py" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/experiments/memory.py">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="3888">
-                  <caret line="247" column="29" selection-start-line="247" selection-start-column="29" selection-end-line="247" selection-end-column="29" />
-                  <folding>
-                    <element signature="e#0#38#0" expanded="true" />
                   </folding>
                 </state>
               </provider>
@@ -146,11 +46,48 @@
           <file leaf-file-name="train.py" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/experiments/train.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="256">
-                  <caret line="19" column="15" selection-start-line="19" selection-start-column="15" selection-end-line="19" selection-end-column="15" />
+                <state relative-caret-position="176">
+                  <caret line="41" column="72" lean-forward="true" selection-start-line="41" selection-start-column="72" selection-end-line="41" selection-end-column="72" />
                   <folding>
                     <element signature="e#0#15#0" expanded="true" />
                   </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+        </leaf>
+      </split-first>
+      <split-second>
+        <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+          <file leaf-file-name="agent.py" pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/experiments/agent.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="479">
+                  <caret line="124" column="44" selection-start-line="124" selection-start-column="44" selection-end-line="124" selection-end-column="44" />
+                  <folding>
+                    <element signature="e#0#60#0" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="train_torch.py" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/experiments/train_torch.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="245">
+                  <caret line="153" column="23" selection-start-line="153" selection-start-column="23" selection-end-line="153" selection-end-column="23" />
+                  <folding>
+                    <element signature="e#0#12#0" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="simple_spread_unified_reward.py" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/../multiagent-particle-envs/multiagent/scenarios/simple_spread_unified_reward.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="358">
+                  <caret line="77" column="27" selection-start-line="76" selection-start-column="23" selection-end-line="77" selection-end-column="27" />
                 </state>
               </provider>
             </entry>
@@ -168,19 +105,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>collaborative</find>
-      <find>reward</find>
-      <find>episode_rewards</find>
-      <find>load</find>
-      <find># collect experience</find>
-      <find>moer</find>
-      <find>process</find>
-      <find>TimeDistributed</find>
-      <find>notimple</find>
-      <find>deepc</find>
-      <find>torch.</find>
-      <find>Torch</find>
-      <find>torch</find>
       <find>th</find>
       <find>action_dim</find>
       <find>nonlin</find>
@@ -188,7 +112,6 @@
       <find>batch_n</find>
       <find>64</find>
       <find>env</find>
-      <find>forward</find>
       <find>keras</find>
       <find>addition</find>
       <find>critic</find>
@@ -198,6 +121,20 @@
       <find>actor</find>
       <find>save_</find>
       <find>save</find>
+      <find>batch_size</find>
+      <find>loss</find>
+      <find>Q</find>
+      <find>batc</find>
+      <find>arglist</find>
+      <find>unified</find>
+      <find>baseline</find>
+      <find>reward_n</find>
+      <find>learning</find>
+      <find>warm-up-episodes</find>
+      <find>forward</find>
+      <find>memory</find>
+      <find>backward</find>
+      <find>mean episode reward</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -213,12 +150,12 @@
         <option value="$PROJECT_DIR$/maddpg/common/tf_util.py" />
         <option value="$PROJECT_DIR$/../multiagent-particle-envs/multiagent/scenarios/simple_spread.py" />
         <option value="$PROJECT_DIR$/experiments/memory.py" />
-        <option value="$PROJECT_DIR$/experiments/train.py" />
         <option value="$PROJECT_DIR$/maddpg/trainer/maddpg.py" />
-        <option value="$PROJECT_DIR$/experiments/agent.py" />
         <option value="$PROJECT_DIR$/experiments/networks.py" />
-        <option value="$PROJECT_DIR$/experiments/train_torch.py" />
         <option value="$PROJECT_DIR$/../multiagent-particle-envs/multiagent/environment.py" />
+        <option value="$PROJECT_DIR$/experiments/train.py" />
+        <option value="$PROJECT_DIR$/experiments/train_torch.py" />
+        <option value="$PROJECT_DIR$/experiments/agent.py" />
       </list>
     </option>
   </component>
@@ -236,6 +173,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -267,34 +205,15 @@
               <item name="maddpg" type="462c0819:PsiDirectoryNode" />
               <item name="maddpg" type="462c0819:PsiDirectoryNode" />
             </path>
-            <path>
-              <item name="maddpg" type="b2602c69:ProjectViewProjectNode" />
-              <item name="maddpg" type="47feb1d3:ProjectViewModuleNode" />
-              <item name="multiagent-particle-envs" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="maddpg" type="b2602c69:ProjectViewProjectNode" />
-              <item name="maddpg" type="47feb1d3:ProjectViewModuleNode" />
-              <item name="multiagent-particle-envs" type="462c0819:PsiDirectoryNode" />
-              <item name="multiagent" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="maddpg" type="b2602c69:ProjectViewProjectNode" />
-              <item name="maddpg" type="47feb1d3:ProjectViewModuleNode" />
-              <item name="multiagent-particle-envs" type="462c0819:PsiDirectoryNode" />
-              <item name="multiagent" type="462c0819:PsiDirectoryNode" />
-              <item name="scenarios" type="462c0819:PsiDirectoryNode" />
-            </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../multiagent_rl" />
-    <property name="settings.editor.selected.configurable" value="project.propDebugger" />
+    <property name="settings.editor.selected.configurable" value="configurable.group.editor" />
   </component>
   <component name="PyConsoleOptionsProvider">
     <option name="myPythonConsoleState">
@@ -304,7 +223,11 @@
     </option>
   </component>
   <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Git\maddpg" />
+    </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Git\multiagent-particle-envs\multiagent\scenarios" />
       <recent name="C:\Git\maddpg\maddpg\common" />
       <recent name="C:\Git\maddpg\experiments" />
     </key>
@@ -322,42 +245,6 @@
     </option>
   </component>
   <component name="RunManager" selected="Python.train-torch-spread">
-    <configuration name="display-torch-spread" type="PythonConfigurationType" factoryName="Python">
-      <module name="maddpg" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="D:\temp\Python35\python.exe" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/experiments" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/experiments/train_torch.py" />
-      <option name="PARAMETERS" value="--scenario=simple_spread --display" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-    </configuration>
-    <configuration name="network" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <module name="maddpg" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/experiments" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="C:\Git\maddpg\experiments\network_test.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-    </configuration>
     <configuration name="play-simple-spread" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="maddpg" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -376,6 +263,24 @@
       <option name="EMULATE_TERMINAL" value="false" />
       <option name="MODULE_MODE" value="false" />
     </configuration>
+    <configuration name="play-torch-spread" type="PythonConfigurationType" factoryName="Python">
+      <module name="maddpg" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="D:\temp\Python35\python.exe" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/experiments" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/experiments/train_torch.py" />
+      <option name="PARAMETERS" value="--scenario=simple_spread_unified_reward --display" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+    </configuration>
     <configuration name="train-simple-spread" type="PythonConfigurationType" factoryName="Python">
       <module name="maddpg" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -384,7 +289,7 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="D:\temp\Python35\python.exe" />
-      <option name="WORKING_DIRECTORY" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/../multiagent_rl" />
       <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
@@ -407,22 +312,20 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/experiments/train_torch.py" />
-      <option name="PARAMETERS" value="--scenario=simple_spread" />
+      <option name="PARAMETERS" value="--scenario=simple_spread_unified_reward" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
       <option name="MODULE_MODE" value="false" />
     </configuration>
     <list>
       <item itemvalue="Python.train-torch-spread" />
-      <item itemvalue="Python.display-torch-spread" />
+      <item itemvalue="Python.play-torch-spread" />
       <item itemvalue="Python.train-simple-spread" />
       <item itemvalue="Python.play-simple-spread" />
-      <item itemvalue="Python.network" />
     </list>
     <recent_temporary>
       <list>
         <item itemvalue="Python.play-simple-spread" />
-        <item itemvalue="Python.network" />
       </list>
     </recent_temporary>
   </component>
@@ -450,16 +353,18 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="1" sideWeight="0.49317148" visible="true" weight="0.12802951" />
+      <window_info content_ui="combo" id="Project" order="1" sideWeight="0.49128368" weight="0.30235043" />
       <window_info anchor="bottom" id="TODO" order="10" weight="0.3293348" />
       <window_info anchor="bottom" id="Event Log" order="2" side_tool="true" />
-      <window_info active="true" anchor="bottom" id="Run" order="6" visible="true" weight="0.302072" />
+      <window_info anchor="bottom" id="Find" order="5" weight="0.28135222" />
+      <window_info anchor="bottom" id="Run" order="6" weight="0.302072" />
       <window_info anchor="bottom" id="Version Control" order="3" />
       <window_info anchor="bottom" id="Python Console" order="0" weight="0.3293348" />
-      <window_info id="Structure" order="2" sideWeight="0.50682855" side_tool="true" weight="0.15964173" />
+      <window_info id="Structure" order="2" sideWeight="0.50871634" side_tool="true" weight="0.30235043" />
       <window_info anchor="bottom" id="Terminal" order="1" weight="0.3293348" />
-      <window_info anchor="bottom" id="Debug" order="7" weight="0.35441658" />
+      <window_info anchor="bottom" id="Debug" order="7" weight="0.35332605" />
       <window_info id="Favorites" order="0" side_tool="true" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
@@ -468,26 +373,25 @@
       <window_info anchor="bottom" id="Message" order="4" />
       <window_info anchor="bottom" id="Inspection" order="9" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="8" weight="0.25" />
-      <window_info anchor="bottom" id="Find" order="5" weight="0.28135222" />
     </layout>
     <layout-to-restore>
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="bottom" id="Run" order="6" weight="0.302072" />
       <window_info anchor="bottom" id="Cvs" order="8" weight="0.25" />
-      <window_info content_ui="combo" id="Project" order="1" sideWeight="0.49317148" weight="0.12802951" />
-      <window_info active="true" id="Structure" order="2" sideWeight="0.50682855" side_tool="true" visible="true" weight="0.15964173" />
+      <window_info content_ui="combo" id="Project" order="1" sideWeight="0.49128368" weight="0.30235043" />
+      <window_info id="Structure" order="2" sideWeight="0.50871634" side_tool="true" weight="0.30235043" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
-      <window_info anchor="bottom" id="TODO" order="10" weight="0.3293348" />
-      <window_info anchor="bottom" id="Find" order="5" weight="0.28135222" />
+      <window_info active="true" anchor="bottom" id="TODO" order="10" visible="true" weight="0.3293348" />
       <window_info anchor="bottom" id="Python Console" order="0" weight="0.3293348" />
-      <window_info anchor="bottom" id="Debug" order="7" weight="0.35441658" />
+      <window_info anchor="bottom" id="Message" order="4" />
+      <window_info anchor="bottom" id="Debug" order="7" weight="0.35332605" />
       <window_info anchor="right" x="0" y="0" width="434" height="856" id="Documentation" order="3" side_tool="true" weight="0.32995737" />
       <window_info anchor="bottom" id="Terminal" order="1" weight="0.3293348" />
       <window_info anchor="bottom" id="Event Log" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Inspection" order="9" weight="0.4" />
       <window_info anchor="bottom" id="Version Control" order="3" />
-      <window_info anchor="bottom" id="Message" order="4" />
+      <window_info anchor="bottom" id="Find" order="5" weight="0.28135222" />
       <window_info id="Favorites" order="0" side_tool="true" />
     </layout-to-restore>
   </component>
@@ -506,11 +410,6 @@
           <url>file://$PROJECT_DIR$/experiments/networks.py</url>
           <line>98</line>
           <option name="timeStamp" value="18" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/experiments/agent.py</url>
-          <line>23</line>
-          <option name="timeStamp" value="23" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/experiments/train.py</url>
@@ -539,18 +438,13 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/../multiagent-particle-envs/multiagent/environment.py</url>
-          <line>186</line>
+          <line>209</line>
           <option name="timeStamp" value="42" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/experiments/train_torch.py</url>
-          <line>130</line>
-          <option name="timeStamp" value="43" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/experiments/train_torch.py</url>
-          <line>94</line>
-          <option name="timeStamp" value="45" />
+          <url>file://$PROJECT_DIR$/experiments/agent.py</url>
+          <line>67</line>
+          <option name="timeStamp" value="53" />
         </line-breakpoint>
       </breakpoints>
       <breakpoints-dialog>
@@ -563,11 +457,31 @@
           </properties>
         </breakpoint>
       </default-breakpoints>
-      <option name="time" value="46" />
+      <option name="time" value="55" />
     </breakpoint-manager>
   </component>
   <component name="debuggerHistoryManager">
     <expressions id="evaluateExpression">
+      <expression>
+        <expression-string>self.warmup_episode_n</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>agent.memory</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>env.observation_space[0].shape[0]</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>world</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
       <expression>
         <expression-string>env.action_space[0].n</expression-string>
         <language-id>Python</language-id>
@@ -584,11 +498,6 @@
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>env.observation_space[0].shape[0]</expression-string>
-        <language-id>Python</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
         <expression-string>env.observation_space[1]</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
@@ -598,43 +507,9 @@
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
-      <expression>
-        <expression-string>env.observation_space</expression-string>
-        <language-id>Python</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>action_n[0][2].detach()</expression-string>
-        <language-id>Python</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>action_n[0][1].detach()</expression-string>
-        <language-id>Python</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>[a.detach for a in action_n[0]]</expression-string>
-        <language-id>Python</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
     </expressions>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/maddpg/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="6" selection-start-column="6" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/experiments/network_test.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="384">
-          <caret line="36" lean-forward="true" selection-start-line="36" selection-end-line="36" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/maddpg/common/memory.py" />
     <entry file="file://$PROJECT_DIR$/experiments/networks.py">
       <provider selected="true" editor-type-id="text-editor">
@@ -864,13 +739,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/experiments/network_test.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="460">
-          <caret line="26" lean-forward="true" selection-start-line="26" selection-end-line="26" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://D:/temp/Python35/Lib/site-packages/rl/memory.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="329">
@@ -906,37 +774,30 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/maddpg/common/distributions.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4896">
-          <caret line="311" selection-start-line="311" selection-end-line="311" />
-          <folding>
-            <element signature="e#0#23#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://D:/temp/Python35/Lib/codecs.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4928">
-          <caret line="308" selection-start-line="308" selection-end-line="308" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/experiments/memory.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3888">
-          <caret line="247" column="29" selection-start-line="247" selection-start-column="29" selection-end-line="247" selection-end-column="29" />
-          <folding>
-            <element signature="e#0#38#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://D:/temp/Python35/Lib/site-packages/torch/nn/modules/linear.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="560">
           <caret line="40" selection-start-line="40" selection-end-line="40" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/maddpg/trainer/maddpg.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-53">
+          <caret line="174" column="31" selection-start-line="174" selection-start-column="31" selection-end-line="174" selection-end-column="31" />
+          <folding>
+            <element signature="e#209#227#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/maddpg/common/distributions.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="4147">
+          <caret line="311" selection-start-line="311" selection-end-line="311" />
+          <folding>
+            <element signature="e#0#23#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -947,70 +808,98 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/experiments/networks.py">
+    <entry file="file://$PROJECT_DIR$/network_test.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="224">
-          <caret line="35" column="32" lean-forward="true" selection-start-line="35" selection-start-column="32" selection-end-line="35" selection-end-column="32" />
-          <folding>
-            <element signature="e#0#18#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="112">
+          <caret line="8" lean-forward="true" selection-start-line="8" selection-end-line="8" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/experiments/train.py">
+    <entry file="file://D:/temp/Python35/Lib/codecs.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="256">
-          <caret line="19" column="15" selection-start-line="19" selection-start-column="15" selection-end-line="19" selection-end-column="15" />
-          <folding>
-            <element signature="e#0#15#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="558">
+          <caret line="308" selection-start-line="308" selection-end-line="308" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/experiments/train_torch.py">
+    <entry file="file://$PROJECT_DIR$/experiments/memory.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="216">
-          <caret line="18" column="59" lean-forward="true" selection-start-line="18" selection-start-column="59" selection-end-line="18" selection-end-column="59" />
+        <state relative-caret-position="1970">
+          <caret line="247" column="29" selection-start-line="247" selection-start-column="29" selection-end-line="247" selection-end-column="29" />
           <folding>
-            <element signature="e#0#12#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/maddpg/trainer/maddpg.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="235">
-          <caret line="174" column="31" lean-forward="true" selection-start-line="174" selection-start-column="31" selection-end-line="174" selection-end-column="31" />
-          <folding>
-            <element signature="e#209#227#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/experiments/agent.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1066">
-          <caret line="103" column="23" lean-forward="true" selection-start-line="103" selection-start-column="23" selection-end-line="103" selection-end-column="23" />
-          <folding>
-            <element signature="e#0#60#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../multiagent-particle-envs/multiagent/environment.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="192">
-          <caret line="105" column="31" lean-forward="true" selection-start-line="105" selection-start-column="31" selection-end-line="105" selection-end-column="31" />
-          <folding>
-            <element signature="e#0#10#0" expanded="true" />
+            <element signature="e#0#38#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/../multiagent-particle-envs/multiagent/scenarios/simple_spread.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="191">
-          <caret line="95" column="14" selection-start-line="95" selection-start-column="14" selection-end-line="95" selection-end-column="14" />
+        <state relative-caret-position="112">
+          <caret line="9" column="23" lean-forward="true" selection-start-line="9" selection-start-column="23" selection-end-line="9" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://D:/temp/Python35/Lib/os.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="156">
+          <caret line="237" column="52" lean-forward="true" selection-start-line="237" selection-start-column="52" selection-end-line="237" selection-end-column="52" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/experiments/train.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="176">
+          <caret line="41" column="72" lean-forward="true" selection-start-line="41" selection-start-column="72" selection-end-line="41" selection-end-column="72" />
+          <folding>
+            <element signature="e#0#15#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../multiagent-particle-envs/multiagent/scenarios/simple_spread_unified_reward.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="358">
+          <caret line="77" column="27" selection-start-line="76" selection-start-column="23" selection-end-line="77" selection-end-column="27" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../multiagent-particle-envs/multiagent/environment.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="203">
+          <caret line="88" column="35" lean-forward="true" selection-start-line="88" selection-start-column="35" selection-end-line="88" selection-end-column="35" />
+          <folding>
+            <element signature="e#0#10#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/experiments/networks.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="416">
+          <caret line="32" column="53" lean-forward="true" selection-start-line="32" selection-start-column="53" selection-end-line="32" selection-end-column="53" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/experiments/train_torch.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="245">
+          <caret line="153" column="23" selection-start-line="153" selection-start-column="23" selection-end-line="153" selection-end-column="23" />
+          <folding>
+            <element signature="e#0#12#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/experiments/agent.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="479">
+          <caret line="124" column="44" selection-start-line="124" selection-start-column="44" selection-end-line="124" selection-end-column="44" />
+          <folding>
+            <element signature="e#0#60#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

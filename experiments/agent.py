@@ -53,7 +53,7 @@ class MyAgent:
         #         self.target_critic.cuda()
 
     def backward(self, r, t=False):
-        # FloatTensor = th.cuda.FloatTensor if self.use_cuda else th.FloatTensor
+        FloatTensor = th.cuda.FloatTensor # if self.use_cuda else th.FloatTensor
 
         # todo : consider memory interval?
         self.memory.append(self.recent_observation,
@@ -97,7 +97,8 @@ class MyAgent:
 
             # it must not affect target network but policy actor network
             loss_Q = nn.MSELoss()(pred_q_values, targets.detach())
-            th.mean_(loss_Q)
+            # loss_Q = th.mean_(loss_Q)
+            loss_Q = th.mean(loss_Q)
             loss_Q.backward()
 
             self.critic_optimizer.zero_grad() # todo : i am not sure.
@@ -121,8 +122,7 @@ class MyAgent:
             self.soft_update(self.target_actor, self.actor, self.tau)
 
     def forward(self, o):
-
-        o = self.memory.get_recent_state(o) # 3 * 18
+        o = self.memory.get_recent_state(o)  # 3 * 18
         # a = self.actor.forward(o[0])
         o = th.from_numpy(np.array(o)).type(th.FloatTensor)
         a = self.actor.forward(o)
