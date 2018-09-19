@@ -8,7 +8,7 @@ import numpy as np
 
 
 keys = ['--exp-name']
-values = [['test'+ str(i) for i in range(10)]]
+values = [['lr-le-3-test'+ str(i) for i in range(10)]]
 
 params = {}
 
