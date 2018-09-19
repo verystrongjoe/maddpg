@@ -14,7 +14,6 @@ MADDPGAgentTrainer
  - process_experience
 
 """
-
 import numpy as np
 import random
 import tensorflow as tf
@@ -23,7 +22,6 @@ import maddpg.common.tf_util as U
 from maddpg.common.distributions import make_pdtype
 from maddpg import AgentTrainer
 from maddpg.trainer.replay_buffer import ReplayBuffer
-
 
 def discount_with_dones(rewards, dones, gamma):
     discounted = []

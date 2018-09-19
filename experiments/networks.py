@@ -10,7 +10,19 @@ class TimeDistributed(nn.Module):
         self.module = module
         self.batch_first = batch_first
 
-    def forward(self, x):
+
+    def forward(self,x ):
+        if len(x.size()) <= 2:
+            return self.module(x)
+        t, n = x.size(0), x.size(1)
+        # merge batch and seq dimensions
+        x_reshape = x.contiguous().view(t * n, x.size(2))
+        y = self.module(x_reshape)
+        # We have to reshape Y
+        y = y.contiguous().view(t, n, y.size()[1])
+        return y
+
+    def forward2(self, x):
         if len(x.size()) <= 2:
             return self.module(x)
 
@@ -29,7 +41,7 @@ class TimeDistributed(nn.Module):
 
 class ActorNetwork(nn.Module):
 
-    def __init__(self, batch_dim, agent_dim, observation_dim, action_dim, hidden_dim=32, nonlin=F.relu,
+    def __init__(self, batch_dim, agent_dim, observation_dim, action_dim, hidden_dim=64, nonlin=F.relu,
                  constrain_out=False, norm_in=False):
         """
         Inputs:
@@ -48,7 +60,7 @@ class ActorNetwork(nn.Module):
         self.action_dim = action_dim
 
         self.linear1 = nn.Linear(observation_dim, hidden_dim)
-        self.bilstm = nn.LSTM(batch_dim, hidden_dim, num_layers=2,  bidirectional=True)
+        self.bilstm = nn.LSTM(batch_dim, hidden_dim, num_layers=1,  bidirectional=True)
 
         self.linear2 = nn.Linear(batch_dim, self.action_dim)
 
@@ -81,26 +93,25 @@ class CriticNetwork(nn.Module):
         """
         super(CriticNetwork, self).__init__()
 
-        self.nonlin = nonlin
+        # self.nonlin = nonlin
         self.batch_n = batch_dim
 
         self.td1 = TimeDistributed(nn.Linear(observation_dim+action_dim, hidden_dim))
-        self.relu1 = TimeDistributed(nonlin)
+        # self.relu1 = TimeDistributed(nonlin)
 
         # return sequence is not exist in pytorch. Instead, output will return with first dimension for sequences.
-        self.bilstm = nn.LSTM(32, hidden_dim, num_layers=1, batch_first=True, bidirectional=True)
+        self.bilstm = nn.LSTM(32, hidden_dim, num_layers=1, batch_first=True, bidirectional=False)
 
-        self.td3 = TimeDistributed(nn.Linear(hidden_dim, 32))
-        self.relu2 = TimeDistributed(nonlin)
+
         self.out = TimeDistributed(nn.Linear(32, out_dim))
 
     def forward(self, o, a):
-        new_input = th.cat(o, a, dim=1) # aggregate observation and action for each agent to feed into critic network
-        h = self.td1(new_input)
-        h = TimeDistributed(F.relu(h))(h)
+        # aggregate observation and action for each agent to feed into critic network
+        oa = th.cat(o, a, dim=1)
+        h = F.relu(self.td1(oa))
         h = self.bilstm(h)
-        h = self.td3(h)
-        h = self.relu2(h)
+        h = F.relu(h[:,-1,:])
+        # h = self.relu2(h)
         qv = self.out(h)
 
         return qv

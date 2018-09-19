@@ -33,7 +33,7 @@ def parse_args():
     parser.add_argument("--warm-up-episodes", type=int, default=2000, help="warm up episodes")
 
     parser.add_argument("--exp-name", type=str, default="default", help="name of the experiment")
-    parser.add_argument("--save-rate", type=int, default=1000, help="save model once every time this many episodes are completed")
+    parser.add_argument("--save-rate", type=int, default=100, help="save model once every time this many episodes are completed")
 
     parser.add_argument("--save-dir", type=str, default="/", help="directory in which training state and model should be saved")
     parser.add_argument("--save-critic-dir", type=str, default="tmp/policy", help="directory in which training state and model are saved")
@@ -149,18 +149,6 @@ def train(arglist):
         # todo : warm up
         agent.backward(rew_n[0], t=done or terminal)
 
-        if done or terminal:
-
-            agent.forward(obs_n)
-            agent.backward(0., t=False)
-
-            obs_n = env.reset()
-            episode_step = 0
-            episode_rewards.append(0)
-            # for a in agent_rewards:
-            #     a.append(0)
-            # agent_info.append([[]])
-
         # increment global step counter
         train_step += 1
 
@@ -184,6 +172,17 @@ def train(arglist):
             t_start = time.time()
             # Keep track of final episode reward
             final_ep_rewards.append(np.mean(episode_rewards[-arglist.save_rate:]))
+
+        if done or terminal:
+            agent.forward(obs_n)
+            agent.backward(0., t=False)
+
+            obs_n = env.reset()
+            episode_step = 0
+            episode_rewards.append(0.)
+            # for a in agent_rewards:
+            #     a.append(0)
+            # agent_info.append([[]])
 
         # saves final episode reward for plotting training curve later
         if len(episode_rewards) > arglist.num_episodes:
